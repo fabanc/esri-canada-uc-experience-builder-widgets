@@ -18,4 +18,4 @@ This exercise shows how to to make a widget data source configurable from Experi
 
   # Results
 
-  ![Data Source Settings](./../images/add-data.PNG)
+  ![Data Source Settings](https://github.com/fabanc/esri-canada-uc-experience-builder-widgets/blob/master/working-with-feature-layers/images/add-data.PNG)
