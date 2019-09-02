@@ -36,7 +36,7 @@ Update the file manifest.json to notify the other widget in your app that this w
   }
   ```
 
-The create a new method to get the queryOptions. This will read the spatial extent from the properties:
+The create a new method to get the queryOptions. This will read the spatial extent from the properties. The extent is an inherited property automatically passed when calling the widget.
 
 ```javascript
   getQueryOptions = (): QueryOptions => {
