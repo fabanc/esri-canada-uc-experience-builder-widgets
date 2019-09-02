@@ -45,16 +45,10 @@ function createQuery(props: AllWidgetProps<IMConfig>, ds: DataSource, options?: 
 
 function loadRecords(props: AllWidgetProps<IMConfig>, ds: DataSource): Promise<DataRecord[]>{
   if(!ds)return Promise.resolve([]);
-
   let q = createQuery(props, ds);
-
-  console.log("Query: ", q);
-
   if(ds.type === ArcGISDataSourceTypes.FeatureLayer){
-    console.log("Feature Layer ...");
     return (ds as FeatureLayerDataSource).load(q);
   }else if(ds.type === DataSourceTypes.FeatureQuery){
-    console.log("Feature Query Data Source ...");
     return (ds as FeatureQueryDataSource).load(q);
   }
 }
@@ -63,14 +57,12 @@ function isDsConfigured(props: AllWidgetProps<IMConfig>): boolean{
   return props.useDataSourcesEnabled && props.useDataSources && !!props.useDataSources[0];
 }
 
-
 export default class Widget extends BaseWidget<AllWidgetProps<IMConfig> & Props, States>{
 
   static preloadData = (state: IMState, allProps: AllWidgetProps<IMConfig> & Props, dataSources: {[dsId: string]: DataSource}): Promise<any> => {
     if(!isDsConfigured(allProps)){
       return Promise.resolve([]);
     }
-
     return loadRecords(allProps, dataSources[allProps.useDataSources[0].dataSourceId]).then(records => {
       return []
     });
@@ -78,11 +70,9 @@ export default class Widget extends BaseWidget<AllWidgetProps<IMConfig> & Props,
 
   constructor(props){
     super(props);
-
     let stateObj: States = {
       datasource: undefined, 
     };
-
     this.state = stateObj;
   }
 
@@ -91,17 +81,14 @@ export default class Widget extends BaseWidget<AllWidgetProps<IMConfig> & Props,
     const {datasource} = this.state;
     const queryOptions: QueryOptions = this.getQueryOptions();
     let query = createQuery(this.props, datasource, queryOptions);
-    console.log("Geometry: ", query.geometry);
-
     return <div className="widget-demo jimu-widget" style={{overflow: 'auto'}}>
       {        
-
         <DataQueryComponent 
         query={query} 
         useDataSource={useDataSources && useDataSources[0]}
         onDataSourceCreated={this.onDs}
         >
-          {this.renderCount}
+          {this.renderCount.bind(this)}
         </DataQueryComponent>
       }
     </div>;
@@ -109,11 +96,9 @@ export default class Widget extends BaseWidget<AllWidgetProps<IMConfig> & Props,
 
   renderCount (ds: DataSource, queryStatus: DataSourceStatus, records: DataRecord[]) {
     let featureCount = 0;
-    // if(isDsConfigured(this.props)){
+    if(isDsConfigured(this.props)){
       featureCount = records.length
-    // }
-
-    // console.log("Data Source: DataQueryComponent");
+    }
     return <span>{defaultMessages.featuresDisplayed} : {featureCount}</span>
   }
 
