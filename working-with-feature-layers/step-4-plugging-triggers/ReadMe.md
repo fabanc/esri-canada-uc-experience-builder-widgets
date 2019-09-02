@@ -4,7 +4,7 @@ This exercise builds on the previous one, but adds a twist. We have added a list
 
 # Steps
 
-## Update the manifest file
+## Update the manifest file (Done in step 2)
 
 Update the file manifest.json to notify the other widget in your app that this widget can subscribe to specific triggers.
 
