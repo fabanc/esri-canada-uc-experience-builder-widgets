@@ -88,3 +88,8 @@ Then modify the render function so that it pass a spatial extent as parameters.
     </div>;
   }
 ```
+
+# Results
+
+This will give you the option to count only the features that are within map extent by connection the map action called `Extent Change` with the feature count widget.
+
