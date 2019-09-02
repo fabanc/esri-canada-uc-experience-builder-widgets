@@ -1,3 +1,7 @@
+# Description
+
+This exercise builds on the previous one, but adds a twist. We have added a listener that can be plugged to any action that returns a map extent. The widget code has also been modified so that the number of features returned by the widget contains only the feature within the map extent.
+
 # Steps
 
 ## Update the manifest file
