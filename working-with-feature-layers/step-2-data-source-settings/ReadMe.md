@@ -15,3 +15,7 @@ This exercise shows how to to make a widget data source configurable from Experi
     </div>
   }
   ```
+
+  # Results
+
+  ![Data Source Settings](./../images/add-data.PNG)
