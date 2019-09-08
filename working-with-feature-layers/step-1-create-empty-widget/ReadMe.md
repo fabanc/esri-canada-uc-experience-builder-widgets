@@ -13,7 +13,8 @@ Here is the widget, next to a map widget.
 
 1. Like any Experience Builder Widget, this widget inherit the class `BaseWidget`. The base widget, just like any Read Component expect a json object that contains the property of the widget.
 
-2. The property `featureCount` valus is part of the state. No actions are defined as part of the state.
+2. The property `featureCount` valus is part of the state. This is using the read setState component built-in function. More info on the React website [here](https://reactjs.org/docs/react-component.html  
+)
 
 3. There is a render method, just like a react component, that simply renders a `div` element with the default value for `featureCount`. Note the syntax for using javascript variable within JSX.
 
