@@ -2,7 +2,15 @@
 
 This exercise builds on the previous one, but adds a twist. We have added a listener that can be plugged to any action that returns a map extent. The widget code has also been modified so that the number of features returned by the widget contains only the feature within the map extent.
 
-# Steps
+# Screenshots
+
+This will give you the option to count only the features that are within map extent by connection the map action called `Extent Change` with the feature count widget.
+
+![Map Actions](https://github.com/fabanc/esri-canada-uc-experience-builder-widgets/blob/master/working-with-feature-layers/images/map-action.PNG)
+
+![Display all features](https://github.com/fabanc/esri-canada-uc-experience-builder-widgets/blob/master/working-with-feature-layers/images/feature-count-ex3.PNG)
+
+# Code Description
 
 ## Update the manifest file (Done in step 2)
 
@@ -88,9 +96,3 @@ Then modify the render function so that it pass a spatial extent as parameters.
     </div>;
   }
 ```
-
-# Results
-
-This will give you the option to count only the features that are within map extent by connection the map action called `Extent Change` with the feature count widget.
-
-![Map Actions](https://github.com/fabanc/esri-canada-uc-experience-builder-widgets/blob/master/working-with-feature-layers/images/map-action.PNG)
