@@ -2,7 +2,11 @@
 
 This exercise shows how to plug your widget with a feature layer data source. This time, we will be counting the numbers of features from a feature layer. The widget will return the total numbers of records returned with the feature layer.
 
-# Steps
+# Screenshots
+
+![Display all features](https://github.com/fabanc/esri-canada-uc-experience-builder-widgets/blob/master/working-with-feature-layers/images/feature-count-ex3.PNG)
+
+# Code Description
 ## Render the number of object in the feature layer.
 ### Update the render method to add a data source component
 
