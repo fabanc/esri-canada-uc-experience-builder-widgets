@@ -1,9 +1,7 @@
 /** @jsx jsx */
-import {BaseWidget, classNames, FormattedMessage, defaultMessages as jimuCoreDefaultMessage} from 'jimu-core';
-import {AllWidgetProps, css, jsx, styled} from 'jimu-core';
+import {BaseWidget} from 'jimu-core';
+import {AllWidgetProps, jsx} from 'jimu-core';
 import {IMConfig} from '../config';
-
-import { TabContent, TabPane, Nav, NavItem, NavLink, Button} from 'jimu-ui';
 import defaultMessages from './translations/default';
 
 export default class Widget extends BaseWidget<AllWidgetProps<IMConfig>, any>{
