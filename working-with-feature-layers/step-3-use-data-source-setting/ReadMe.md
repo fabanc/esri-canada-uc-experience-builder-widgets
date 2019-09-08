@@ -1,6 +1,6 @@
 # Description
 
-This exercise shows how to plug your widget with a feature layer data source. This time, we will be counting the numbers of features from a feature layer. The widget will return the total numbers of records returned with the feature layer.
+This exercise shows how to plug your widget with a feature layer data source. This time, we will be counting the numbers of features from a feature layer. The widget will return the total numbers of records returned with the feature layer, regardless of what is displayed in the current map extent.
 
 # Screenshots
 
