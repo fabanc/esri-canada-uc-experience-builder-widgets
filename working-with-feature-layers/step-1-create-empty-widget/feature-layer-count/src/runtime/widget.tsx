@@ -14,7 +14,6 @@ export default class Widget extends BaseWidget<AllWidgetProps<IMConfig>, any>{
   }
 
   render(){
-
     return <div className="widget-demo jimu-widget" style={{overflow: 'auto'}}>
       {defaultMessages.featuresDisplayed} : {this.state.featureCount}
     </div>;
