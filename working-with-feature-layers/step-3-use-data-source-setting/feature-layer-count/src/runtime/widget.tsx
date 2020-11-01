@@ -4,7 +4,7 @@ import {IMState, BaseWidget, classNames, FormattedMessage, defaultMessages as ji
 import {AllWidgetProps, css, jsx, styled} from 'jimu-core';
 import {DataRecord, DataSource, DataSourceTypes, FeatureQueryDataSource} from 'jimu-core';
 import {IMConfig} from '../config';
-import {ArcGISDataSourceTypes} from 'jimu-arcgis/arcgis-data-source-type';
+import {ArcGISDataSourceTypes} from 'jimu-arcgis';
 import {FeatureLayerDataSource, FeatureLayerViewDataSource } from 'jimu-arcgis/arcgis-data-source';
 
 import { TabContent, TabPane, Nav, NavItem, NavLink, Button} from 'jimu-ui';
@@ -84,6 +84,7 @@ export default class Widget extends BaseWidget<AllWidgetProps<IMConfig> & Props,
   render(){
     const {useDataSources} = this.props;
     const {datasource} = this.state;
+	console.log("State: ", this.state);
     return <div className="widget-demo jimu-widget" style={{overflow: 'auto'}}>
       {
         
@@ -92,13 +93,15 @@ export default class Widget extends BaseWidget<AllWidgetProps<IMConfig> & Props,
         useDataSource={useDataSources && useDataSources[0]}
         onDataSourceCreated={this.onDs}
         >
-          {this.renderCount.bind(this)}
+        {this.renderCount.bind(this)}
         </DataSourceComponent>
       }
     </div>;
+	
   }
 
   renderCount (ds: DataSource) {
+	console.log('Render Count ...');
     let featureCount = 0;
     if(isDsConfigured(this.props)){
       featureCount = ds.getRecords().length
