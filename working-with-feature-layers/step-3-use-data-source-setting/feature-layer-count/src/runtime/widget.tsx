@@ -4,11 +4,9 @@ import {IMState, BaseWidget, classNames, FormattedMessage, defaultMessages as ji
 import {AllWidgetProps, css, jsx, styled} from 'jimu-core';
 import {DataRecord, DataSource, DataSourceTypes, FeatureQueryDataSource} from 'jimu-core';
 import {IMConfig} from '../config';
-import {ArcGISDataSourceTypes} from 'jimu-arcgis';
 import {FeatureLayerDataSource, FeatureLayerViewDataSource } from 'jimu-arcgis/arcgis-data-source';
 import Query = require('esri/tasks/support/Query');
 
-import { TabContent, TabPane, Nav, NavItem, NavLink, Button} from 'jimu-ui';
 import defaultMessages from './translations/default';
 
 interface Props{
@@ -52,17 +50,11 @@ export default class Widget extends BaseWidget<AllWidgetProps<IMConfig> & Props,
   render(){
     const {useDataSources} = this.props;
     const {datasource} = this.state;
-	console.log("State: ", this.state);
     return <div className="widget-demo jimu-widget" style={{overflow: 'auto'}}>
       {
-        
-        <DataSourceComponent 
-        query={this.state.query}
-		widgetId={this.props.id}
-        useDataSource={useDataSources && useDataSources[0]}
-        onDataSourceCreated={this.onDs}
-        >
-        {this.renderCount.bind(this)}
+        <DataSourceComponent query={this.state.query} widgetId={this.props.id} useDataSource={useDataSources && useDataSources[0]} 
+        onDataSourceCreated={this.onDs}>
+          {this.renderCount.bind(this)}
         </DataSourceComponent>
       }
     </div>;
