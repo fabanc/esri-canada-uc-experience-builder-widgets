@@ -70,8 +70,6 @@ export default class Widget extends BaseWidget<AllWidgetProps<IMConfig> & Props,
   }
 
   renderCount (ds: DataSource, queryStatus: DataSourceStatus, records:DataRecord[]) {
-	  console.log('Status: ', queryStatus.status)
-	console.log('Render Count ...');
     let featureCount = 0;
     if(isDsConfigured(this.props)){
       featureCount = ds.getRecords().length
