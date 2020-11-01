@@ -15,11 +15,14 @@ We are leveraging the out-of-the-box DataSource chooser in the file `Settings.ts
 
 ```javascript
   render(){
-    return <div className="widget-setting-demo">
-            <DataSourceChooser
-              types={Immutable([AllDataSourceTypes.FeatureLayer, AllDataSourceTypes.FeatureQuery])}
-              selectedDataSourceIds={Immutable((this.props.useDataSources && this.props.useDataSources[0]) ? [this.props.useDataSources[0].dataSourceId] : [])}
-              widgetId={this.props.id} mustUseDataSource={true}/>
+    return <div className="widget-setting-demo">  
+			<DataSourceSelector 
+			      types={Immutable([AllDataSourceTypes.FeatureLayer])}
+            useDataSourcesEnabled={true} /*onToggleUseDataEnabled={this.onToggleUseDataEnabled}*/ mustUseDataSource={true}
+            useDataSources={this.props.useDataSources}
+            onChange={this.onDataSourceChange}
+			      widgetId={this.props.id}
+          />
     </div>
   }
   ```
