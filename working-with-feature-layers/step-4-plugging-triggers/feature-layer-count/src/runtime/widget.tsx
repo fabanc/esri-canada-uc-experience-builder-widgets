@@ -42,7 +42,6 @@ export default class Widget extends BaseWidget<AllWidgetProps<IMConfig> & Props,
       outFields: ['*'],
       geometry: geometry
     }
-
   }
 
   constructor(props){
