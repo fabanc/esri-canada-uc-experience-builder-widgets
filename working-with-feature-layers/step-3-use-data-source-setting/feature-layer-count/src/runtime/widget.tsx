@@ -6,6 +6,7 @@ import {DataRecord, DataSource, DataSourceTypes, FeatureQueryDataSource} from 'j
 import {IMConfig} from '../config';
 import {ArcGISDataSourceTypes} from 'jimu-arcgis';
 import {FeatureLayerDataSource, FeatureLayerViewDataSource } from 'jimu-arcgis/arcgis-data-source';
+import Query = require('esri/tasks/support/Query');
 
 import { TabContent, TabPane, Nav, NavItem, NavLink, Button} from 'jimu-ui';
 import defaultMessages from './translations/default';
@@ -19,57 +20,24 @@ interface Props{
   currentPageId: string,
 }
 
-interface QueryOptions {
-  geometry?: any,
-  sortField?: string,
-  sortOrder?: string, 
-  orderByFields?: string | string[],
-  start?: number, 
-  num?: number
-}
-
 interface States {
   datasource: FeatureLayerDataSource | FeatureQueryDataSource | FeatureLayerViewDataSource;
 }
 
-function createQuery(props: AllWidgetProps<IMConfig>, ds: DataSource, options?: QueryOptions): any{  
-  let q = {
-    where: '1=1',
-    outFields: ['*'],
-    returnGeometry: true
-  } as any;
-  
-  return q;
-}
-
-function loadRecords(props: AllWidgetProps<IMConfig>, ds: DataSource): Promise<DataRecord[]>{
-  if(!ds)return Promise.resolve([]);
-
-  let q = createQuery(props, ds);
-
-  if(ds.type === ArcGISDataSourceTypes.FeatureLayer){
-    return (ds as FeatureLayerDataSource).load(q);
-  }else if(ds.type === DataSourceTypes.FeatureQuery){
-    return (ds as FeatureQueryDataSource).load(q);
-  }
-}
-
 function isDsConfigured(props: AllWidgetProps<IMConfig>): boolean{
-  return props.useDataSourcesEnabled && props.useDataSources && !!props.useDataSources[0];
+  return props.useDataSources && !!props.useDataSources[0];
 }
-
 
 export default class Widget extends BaseWidget<AllWidgetProps<IMConfig> & Props, States>{
 
-  static preloadData = (state: IMState, allProps: AllWidgetProps<IMConfig> & Props, dataSources: {[dsId: string]: DataSource}): Promise<any> => {
-    if(!isDsConfigured(allProps)){
-      return Promise.resolve([]);
-    }
-
-    return loadRecords(allProps, dataSources[allProps.useDataSources[0].dataSourceId]).then(records => {
-      return []
-    });
-  };
+  componentDidMount(){
+    const q = new Query({
+      where: '1 = 1',
+      outFields: ['*'],
+      returnGeometry: true
+    })
+    this.setState({query: q})
+  }
 
   constructor(props){
     super(props);
@@ -89,7 +57,8 @@ export default class Widget extends BaseWidget<AllWidgetProps<IMConfig> & Props,
       {
         
         <DataSourceComponent 
-        defaultQuery={createQuery(this.props, datasource)} 
+        query={this.state.query}
+		widgetId={this.props.id}
         useDataSource={useDataSources && useDataSources[0]}
         onDataSourceCreated={this.onDs}
         >
@@ -100,7 +69,8 @@ export default class Widget extends BaseWidget<AllWidgetProps<IMConfig> & Props,
 	
   }
 
-  renderCount (ds: DataSource) {
+  renderCount (ds: DataSource, queryStatus: DataSourceStatus, records:DataRecord[]) {
+	  console.log('Status: ', queryStatus.status)
 	console.log('Render Count ...');
     let featureCount = 0;
     if(isDsConfigured(this.props)){

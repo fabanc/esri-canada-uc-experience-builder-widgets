@@ -20,17 +20,6 @@ export default class Setting extends BaseWidgetSetting<AllWidgetSettingProps<IMC
     };
 
   }
-  //setDatasource = (ds: DataSource) => {
-  //  let schema = ds && ds.getSchema();
-  //  this.setState({
-  //    datasource: ds,
-  //    fields: (schema as DataSourceSchema).fields as { [jimuName: string]: FieldSchema }
-  //  });
-  //}
-
-  //onDsCreate = ds => {
-  //  this.setDatasource(ds)
-  //};
   
   onDataSourceChange = (useDataSources: UseDataSource[]) => {
     if(!useDataSources){
@@ -52,7 +41,7 @@ export default class Setting extends BaseWidgetSetting<AllWidgetSettingProps<IMC
             useDataSourcesEnabled={true} /*onToggleUseDataEnabled={this.onToggleUseDataEnabled}*/ mustUseDataSource={true}
             useDataSources={this.props.useDataSources}
             onChange={this.onDataSourceChange}
-			widgetId={this.props.id}
+			  widgetId={this.props.id}
           />
     </div>
   }
