@@ -33,66 +33,42 @@ Update the file manifest.json to notify the other widget in your app that this w
 
   ## Update the widget code
 
-  Modify the create options to pass use a spatial extent.
+  Modify the code that created the query use a spatial extent. Because the query is now dynamic, we're going to have a function that generate it dynamically. We want to make sure that the application also has the extent information in its state.
 
   ```javascript
-  function createQuery(props: AllWidgetProps<IMConfig>, ds: DataSource, options?: QueryOptions): any{  
-    let q = {
-        where: '1=1',
-        outFields: ['*'],
-        returnGeometry: true,
-        ...(options || {}) // New element to use the parameter passed using the parameter options.
-    } as any;
+  query = () => {
+    if (!this.isDsConfigured()) {
+      return;
+    }
+	
+    let where = '1=1';
+    let outFields =  ['*'];
+    let geometry = (this.props.stateProps && this.props.stateProps.EXTENT_CHANGE) ? this.props.stateProps.EXTENT_CHANGE: null
     
-    return q;
+    return {
+      where: '1=1',
+      outFields: outFields,
+      geometry: geometry
+    }
   }
   ```
 
-The create a new method to get the queryOptions. This will read the spatial extent from the properties. The extent is an inherited property automatically passed when calling the widget.
-
-```javascript
-  getQueryOptions = (): QueryOptions => {
-    const options: QueryOptions = {}
-    const {config, stateProps} = this.props
-    if(stateProps && stateProps.queryExtent){
-      options.geometry = stateProps.queryExtent
-    }
-    return Object.keys(options).length > 0 ? options : undefined
-  }
-```
-
-
-Update the renderCount method, so that it includes the additional parameters passed the by component `DataQueryComponent`.
-
-```javascript
-  renderCount (ds: DataSource, queryStatus: DataSourceStatus, records: DataRecord[]) {
-    let featureCount = 0;
-    if(isDsConfigured(this.props)){
-      featureCount = records.length
-    }
-    return <span>{defaultMessages.featuresDisplayed} : {featureCount}</span>
-  }
-```
-
-
-Then modify the render function so that it pass a spatial extent as parameters.
+Then it just take some small update in our render method to use that query:
 
 ```javascript
   render(){
-    const {useDataSources} = this.props;
+	  
+    const {useDataSources, stateProps} = this.props;
     const {datasource} = this.state;
-    const queryOptions: QueryOptions = this.getQueryOptions();
-    let query = createQuery(this.props, datasource, queryOptions);
+    let query = this.query();
+	
     return <div className="widget-demo jimu-widget" style={{overflow: 'auto'}}>
-      {        
-        <DataQueryComponent 
-        query={query} 
-        useDataSource={useDataSources && useDataSources[0]}
-        onDataSourceCreated={this.onDs}
-        >
-          {this.renderCount}
-        </DataQueryComponent>
+      {
+        <DataSourceComponent query={query} widgetId={this.props.id} useDataSource={useDataSources[0]} onDataSourceCreated={this.onDs}>
+        {this.renderCount.bind(this)}
+        </DataSourceComponent>
       }
     </div>;
+	
   }
 ```
