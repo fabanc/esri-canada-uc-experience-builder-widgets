@@ -1,11 +1,12 @@
 /** @jsx jsx */
 import {IMState, BaseWidget, classNames, FormattedMessage, defaultMessages as jimuCoreDefaultMessage, 
-  LayoutInfo, IMAppConfig, AppMode, BrowserSizeMode, DataSourceComponent, DataQueryComponent, DataSourceStatus} from 'jimu-core';
+  LayoutInfo, IMAppConfig, AppMode, BrowserSizeMode, DataSourceComponent} from 'jimu-core';
 import {AllWidgetProps, css, jsx, styled} from 'jimu-core';
 import {DataRecord, DataSource, DataSourceTypes, FeatureQueryDataSource} from 'jimu-core';
 import {IMConfig} from '../config';
-import {ArcGISDataSourceTypes} from 'jimu-arcgis/arcgis-data-source-type';
+import {ArcGISDataSourceTypes} from 'jimu-arcgis';
 import {FeatureLayerDataSource, FeatureLayerViewDataSource } from 'jimu-arcgis/arcgis-data-source';
+import Query = require('esri/tasks/support/Query');
 
 import { TabContent, TabPane, Nav, NavItem, NavLink, Button} from 'jimu-ui';
 import defaultMessages from './translations/default';
@@ -19,85 +20,76 @@ interface Props{
   currentPageId: string,
 }
 
-interface QueryOptions {
-  geometry?: any,
-  sortField?: string,
-  sortOrder?: string, 
-  orderByFields?: string | string[],
-  start?: number, 
-  num?: number
-}
-
 interface States {
   datasource: FeatureLayerDataSource | FeatureQueryDataSource | FeatureLayerViewDataSource;
 }
 
-function createQuery(props: AllWidgetProps<IMConfig>, ds: DataSource, options?: QueryOptions): any{  
-  let q = {
-    where: '1=1',
-    outFields: ['*'],
-    returnGeometry: true,
-    ...(options || {})
-  } as any;
-  
-  return q;
-}
-
-function loadRecords(props: AllWidgetProps<IMConfig>, ds: DataSource): Promise<DataRecord[]>{
-  if(!ds)return Promise.resolve([]);
-  let q = createQuery(props, ds);
-  if(ds.type === ArcGISDataSourceTypes.FeatureLayer){
-    return (ds as FeatureLayerDataSource).load(q);
-  }else if(ds.type === DataSourceTypes.FeatureQuery){
-    return (ds as FeatureQueryDataSource).load(q);
-  }
-}
-
-function isDsConfigured(props: AllWidgetProps<IMConfig>): boolean{
-  return props.useDataSourcesEnabled && props.useDataSources && !!props.useDataSources[0];
-}
+//function isDsConfigured(props: AllWidgetProps<IMConfig>): boolean{
+//  return props.useDataSources && !!props.useDataSources[0];
+//}
 
 export default class Widget extends BaseWidget<AllWidgetProps<IMConfig> & Props, States>{
 
-  static preloadData = (state: IMState, allProps: AllWidgetProps<IMConfig> & Props, dataSources: {[dsId: string]: DataSource}): Promise<any> => {
-    if(!isDsConfigured(allProps)){
-      return Promise.resolve([]);
+    
+  isDsConfigured = () => {
+    if (this.props.useDataSources &&
+      this.props.useDataSources.length === 1) {
+      return true;
     }
-    return loadRecords(allProps, dataSources[allProps.useDataSources[0].dataSourceId]).then(records => {
-      return []
-    });
-  };
+    return false;
+  }
+  
+  query = () => {
+    if (!this.isDsConfigured()) {
+      return;
+    }
+	
+	let where = '1=1';
+	let outFields =  ['*'];
+	let geometry = (this.props.stateProps && this.props.stateProps.EXTENT_CHANGE) ? this.props.stateProps.EXTENT_CHANGE: null
+	
+	return {
+		where: '1=1',
+		outFields: outFields,
+		geometry: geometry
+	}
+
+  }
 
   constructor(props){
     super(props);
+
     let stateObj: States = {
-      datasource: undefined, 
+		datasource: undefined
     };
+
     this.state = stateObj;
   }
 
   render(){
-    const {useDataSources} = this.props;
+	  
+    const {useDataSources, stateProps} = this.props;
     const {datasource} = this.state;
-    const queryOptions: QueryOptions = this.getQueryOptions();
-    let query = createQuery(this.props, datasource, queryOptions);
+	console.log("State: ", this.state);
+	let query = this.query();
+	console.log('Query: ', query);
+	
     return <div className="widget-demo jimu-widget" style={{overflow: 'auto'}}>
-      {        
-        <DataQueryComponent 
-        query={query} 
-        useDataSource={useDataSources && useDataSources[0]}
-        onDataSourceCreated={this.onDs}
-        >
-          {this.renderCount.bind(this)}
-        </DataQueryComponent>
+      {
+        
+        <DataSourceComponent query={query} widgetId={this.props.id} useDataSource={useDataSources[0]} onDataSourceCreated={this.onDs}>
+        {this.renderCount.bind(this)}
+        </DataSourceComponent>
       }
     </div>;
+	
   }
 
-  renderCount (ds: DataSource, queryStatus: DataSourceStatus, records: DataRecord[]) {
+  renderCount (ds: DataSource, queryStatus: DataSourceStatus, records:DataRecord[], toto:any) {
     let featureCount = 0;
-    if(isDsConfigured(this.props)){
-      featureCount = records.length
+    if(this.isDsConfigured()){
+		featureCount = ds.getRecords().length;
+		console.log('Records: ', ds.records, ' - Count: ', ds.count, 'Records Length: ', ds.getRecords().length); 
     }
     return <span>{defaultMessages.featuresDisplayed} : {featureCount}</span>
   }
@@ -106,14 +98,5 @@ export default class Widget extends BaseWidget<AllWidgetProps<IMConfig> & Props,
     this.setState({
       datasource: ds
     })
-  }
-
-  getQueryOptions = (): QueryOptions => {
-    const options: QueryOptions = {}
-    const {config, stateProps} = this.props
-    if(stateProps && stateProps.queryExtent){
-      options.geometry = stateProps.queryExtent
-    }
-    return Object.keys(options).length > 0 ? options : undefined
   }
 }

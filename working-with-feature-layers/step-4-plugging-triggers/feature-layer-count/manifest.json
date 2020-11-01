@@ -13,7 +13,7 @@
     "width": 800,
     "height": 500
   },
-  "messageActions": [
+    "messageActions": [
     {
       "name": "query",
       "label": "Query by extent",

@@ -8,12 +8,15 @@ export default class QueryAction extends AbstractMessageAction{
   filterMessage(message: Message): boolean{return true; }
 
   onExecute(message: Message, actionConfig?: any): Promise<boolean> | boolean{
+	console.log('Extent Change: ', message.type);
     switch(message.type){
       case MessageType.ExtentChange:
+		console.log('Dispatch Change');
         const extent = (message as ExtentChangeMessage).extent;
-        getAppStore().dispatch(appActions.widgetStatePropChange(this.widgetId, 'queryExtent', {
+        getAppStore().dispatch(
+          appActions.widgetStatePropChange(this.widgetId, MessageType.ExtentChange, {
           type: extent.type,
-          ...(message as ExtentChangeMessage).extent.toJSON()
+          ...extent?.toJSON()
         }));
         break;
     }
