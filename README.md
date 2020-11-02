@@ -37,8 +37,8 @@ Experience Builder comes with its own folder to create your own widget, named â€
 
 In the screenshot below, I have made a copy of the default folder `your-extensions` named `fabien-widget-repo`
 
-![GitHub Logo](working-with-feature-layers\images\custom-repo-1.png)
+![GitHub Logo](https://github.com/fabanc/esri-canada-uc-experience-builder-widgets/blob/master/working-with-feature-layers/images/custom-repo-1.png)
   
  It is important you keep the file `manifest.json`. This is what Webpack check to determine if this folder contains cutom widget / themes or not.
 
-![GitHub Logo](working-with-feature-layers\images\custom-repo-2.png)
+![GitHub Logo](https://github.com/fabanc/esri-canada-uc-experience-builder-widgets/blob/master/working-with-feature-layers/images/custom-repo-2.png)
