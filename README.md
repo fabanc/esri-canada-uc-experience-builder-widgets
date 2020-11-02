@@ -25,11 +25,11 @@ When you download Experience builder, get inspired :
 
 Exprience Builder lets you define unit tests for each widget. Simply run the command `npm test` in the directory `client` to run all you unit tests.
 
-![GitHub Logo](working-with-feature-layers\images\npm-test.png)
+![GitHub Logo](https://github.com/fabanc/esri-canada-uc-experience-builder-widgets/blob/master/working-with-feature-layers/images/npm-test.png)
 
 Each widget should have its own folder called `tests`. Check out the tests unit that comes with Experience Builder at the path `client\your-extensions\widgets\simple\tests`
 
-![GitHub Logo](working-with-feature-layers\images\npm-test-2.png)
+![GitHub Logo](https://github.com/fabanc/esri-canada-uc-experience-builder-widgets/blob/master/working-with-feature-layers/images/npm-test-2.png)
 
 ### Use your own repo
 
