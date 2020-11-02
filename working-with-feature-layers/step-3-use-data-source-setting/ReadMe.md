@@ -19,7 +19,7 @@ We're delegating the rendering into two different method.
  - `render` is in charge of calling the data source component with the appropriate query.
  - `renderCount` is in charge of printing the results returned by the query.
 
- Because for now, the query is unrelate to the extent of the map, the query will always return the same number of features.
+ Because for now, the query is not filtering using the extent of the map, the query will always return the same number of features.
 
  ```javascript
 
@@ -56,6 +56,7 @@ We're delegating the rendering into two different method.
 ### Creating a query
 
   The code relies on a query that will be refined when counting the features only during the current map extent.
+  
   ```javascript
   componentDidMount(){
     const q = new Query({

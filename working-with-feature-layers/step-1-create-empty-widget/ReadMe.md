@@ -1,6 +1,6 @@
 # Description
 
-This widget is a template for starting our own widget. It just initialize a simple widget with a simple property called featureCount initialized to 0. The value of the the property `featureCount` is then displayed at runtime.
+This widget is a template for starting our own widget. It just initializes a simple widget with a simple property called featureCount initialized to 0. The value of the the property `featureCount` is then displayed at runtime.
 
 # Screenshot
 
